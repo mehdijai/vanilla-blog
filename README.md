@@ -12,11 +12,11 @@ create database rss_reader;
 ```
 4- Create `rss_provider` table,
 ```sql
-create table rss_provider (
-    ID INT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    slug
-    rss_url VARCHAR(255) NOT NULL,
-    frequency INT NOT NULL DEFAULT(1),
-);
+CREATE TABLE `rss_providers` (
+  `id` int NOT NULL,
+  `title` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `frequency` int NOT NULL DEFAULT '1',
+  `logo` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+)
 ```
