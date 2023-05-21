@@ -1,0 +1,3 @@
+<button id="scroll-up" type="button" class="fixed bottom-1 right-1 text-blue-700 border border-blue-700 bg-gray-100 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 transition-all hover:pb-4 hover:pt-1 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+  <span class="material-symbols-rounded">arrow_upward</span>
+</button>
