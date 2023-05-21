@@ -4,9 +4,9 @@ Stylish RSS Reader Made with vanilla PHP & TailwindCSS for styling.
 This projet focuses heavily on the PHP and the Backend.
 
 ## How to use
-1- Prepare a LAMP environment (I use Laragon, you can use whatever you are comfortable with. `XAMPP`, `MAMP`, `WAMP`...),
-2- Clone the project to the route folder of your server,
-3- Create a MySQL database, named `rss-reader`,
+- Prepare a LAMP environment (I use Laragon, you can use whatever you are comfortable with. `XAMPP`, `MAMP`, `WAMP`...),
+- Clone the project to the route folder of your server,
+- Create a MySQL database, named `rss-reader`,
 ```sql
 create database rss_reader;
 ```
