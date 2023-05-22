@@ -8,5 +8,3 @@ require("app/services/Database.php");
 require("routes/web.php");
 
 // dd($_SERVER);
-
-Router::getInstance()->handle();
