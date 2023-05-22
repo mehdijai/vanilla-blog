@@ -48,4 +48,7 @@ $posts = [
     ],
 ];
 
+$db = new Database();
+$rss_providers = $db->query("select * from rss_providers;");
+
 require("views/home.view.php");
