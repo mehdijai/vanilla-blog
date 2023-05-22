@@ -46,6 +46,7 @@ CREATE TABLE `modules`(
 CREATE TABLE `posts`(
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
     `author_id` INT,
+    `module_id` INT NULLABLE,
 	`title` VARCHAR(255) NOT NULL,
     `body` TEXT(500) NOT NULL,
 	`thumbnail` VARCHAR(255) NOT NULL,
@@ -53,18 +54,8 @@ CREATE TABLE `posts`(
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
-    FOREIGN KEY (`author_id`) REFERENCES authors(id) ON DELETE SET NULL
-);
-
-CREATE TABLE `module_post`(
-	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
-    `module_id` INT,
-    `post_id` INT,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-    FOREIGN KEY (`module_id`) REFERENCES modules(id) ON DELETE CASCADE,
-    FOREIGN KEY (`post_id`) REFERENCES posts(id) ON DELETE CASCADE
+    FOREIGN KEY (`author_id`) REFERENCES authors(id) ON DELETE SET NULL,
+    FOREIGN KEY (`module_id`) REFERENCES modules(id) ON DELETE SET NULL
 );
 
 CREATE TABLE `category_post`(
