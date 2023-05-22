@@ -31,6 +31,10 @@ function abort($code)
     die();
 }
 
+function isUrl($url){
+    return $_SERVER['REQUEST_URI'] === $url;
+}
+
 function formatDate($date)
 {
     $formattedDate = date('d/m/Y', strtotime($date));
