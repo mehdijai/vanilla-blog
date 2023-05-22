@@ -49,6 +49,13 @@ $posts = [
 ];
 
 $db = new Database();
-$rss_providers = $db->query("select * from rss_providers;");
+
+$query = 'select a.*, COUNT(p.author_id) as posts_count
+from authors as a
+LEFT OUTER JOIN posts as p
+on p.author_id = a.id
+GROUP BY a.id';
+
+$authors = $db->query($query);
 
 require("views/home.view.php");
