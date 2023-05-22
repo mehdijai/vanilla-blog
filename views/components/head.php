@@ -14,4 +14,4 @@
 
 <body class="bg-gray-100" x-data="{ isOpenFilterOption: false }" @click="isOpenFilterOption = false">
 
-    <?php require("nav.php") ?>
+    <?php component("nav") ?>

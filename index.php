@@ -2,9 +2,6 @@
 
 // use App\Services\Router;
 
-require("app/functions/utils.php");
-require("app/services/Router.php");
-require("app/services/Database.php");
-require("routes/web.php");
+require("app/bootstrap.php");
 
 // dd($_SERVER);
