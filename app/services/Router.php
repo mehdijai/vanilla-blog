@@ -17,29 +17,29 @@ class Router
         $this->uri = preg_replace("/(^\/)|(\/$)/", "", parse_url($_SERVER['REQUEST_URI'])['path']);
     }
 
-    public function get($route, $controller)
+    public function get($route, $controller, $function = "index")
     {
-        $this->add('GET', $route, $controller);
+        $this->add('GET', $route, $controller, $function);
     }
 
-    public function post($route, $controller)
+    public function post($route, $controller, $function = "index")
     {
-        $this->add('POST', $route, $controller);
+        $this->add('POST', $route, $controller, $function);
     }
 
-    public function patch($route, $controller)
+    public function patch($route, $controller, $function = "index")
     {
-        $this->add('PATCH', $route, $controller);
+        $this->add('PATCH', $route, $controller, $function);
     }
 
-    public function put($route, $controller)
+    public function put($route, $controller, $function = "index")
     {
-        $this->add('PUT', $route, $controller);
+        $this->add('PUT', $route, $controller, $function);
     }
 
-    public function delete($route, $controller)
+    public function delete($route, $controller, $function = "index")
     {
-        $this->add('DELETE', $route, $controller);
+        $this->add('DELETE', $route, $controller, $function);
     }
 
     public static function getInstance()
@@ -51,23 +51,33 @@ class Router
         return self::$instance;
     }
 
-    public function simpleRoute($route, $controller)
+    private function render($controller, $function, $data = [])
     {
-        if (!empty($uri)) {
+        require("controllers/" . $controller . "Controller.php");
+        $className = $controller . "Controller";
+        $instance = new $className($data);
+        extract($data);
+        call_user_func(array($instance, $function));
+        exit();
+    }
+
+    public function simpleRoute($route, $controller, $function)
+    {
+
+        if (!empty($this->uri)) {
             $route = preg_replace("/(^\/)|(\/$)/", "", $route);
             $reqUri =  preg_replace("/(^\/)|(\/$)/", "", $this->uri);
         } else {
             $reqUri = "/";
         }
 
+        parse_str($_SERVER['QUERY_STRING'], $queries);
+
         if ($reqUri == $route) {
-            $params = [];
-            parse_str($_SERVER['QUERY_STRING'], $queries);
-            require("controllers/" . $controller . "Controller.php");
-            exit();
+            $this->render($controller, $function, compact('queries'));
         }
     }
-    public function add($method, $route, $controller)
+    public function add($method, $route, $controller, $function)
     {
         if (!in_array($method, ['GET', 'POST', "PUT", "PATCH", "DELETE"])) {
             throw new \InvalidArgumentException("method is not correct");
@@ -76,6 +86,7 @@ class Router
         if ($this->method != $method) {
             return;
         }
+
         //will store all the parameters value in this array
         $params = [];
         parse_str($_SERVER['QUERY_STRING'], $queries);
@@ -88,9 +99,10 @@ class Router
 
         //if the $route does not contain any param call simpleRoute();
         if (empty($paramMatches[0])) {
-            $this->simpleRoute($route, $controller);
+            $this->simpleRoute($route, $controller, $function);
             return;
         }
+
 
         //setting parameters names
         foreach ($paramMatches[0] as $key) {
@@ -151,7 +163,7 @@ class Router
 
         //now matching route with regex
         if (preg_match("/$reqUri/", $route)) {
-            require("controllers/" . $controller . "Controller.php");
+            $this->render($controller, $function, compact('queries', 'params'));
             exit();
         }
 

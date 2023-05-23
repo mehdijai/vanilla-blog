@@ -5,7 +5,8 @@
 
 $router = Router::getInstance();
 
-$router->get("/{id}", "Post");
 $router->get("/", "Home");
+$router->get("/posts/create", "Post", "create");
 $router->get("/about", "About");
 $router->get("/contact", "Contact");
+$router->get("/{slug}", "Post", "view");

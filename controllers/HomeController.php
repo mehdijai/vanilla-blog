@@ -1,11 +1,18 @@
 <?php
 
-$db = new Database();
+class HomeController extends Controller
+{
+    public function index()
+    {
+        $db = new Database();
 
-$authors = AuthorsRepository::all($db);
+        $authors = AuthorsRepository::all($db);
 
-$posts = PostsRepository::all($db);
+        $posts = PostsRepository::all($db);
 
-$categories = CategoriesRepository::all($db);
+        $categories = CategoriesRepository::all($db);
 
-require("views/home.view.php");
+        extract($this->data);
+        require("views/home.view.php");
+    }
+}
