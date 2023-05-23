@@ -1,7 +1,4 @@
 <?php
-// namespace Routes;
-
-// use App\Services\Router;
 
 $router = Router::getInstance();
 

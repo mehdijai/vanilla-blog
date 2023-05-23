@@ -31,7 +31,8 @@ function abort($code)
     die();
 }
 
-function isUrl($url){
+function isUrl($url)
+{
     return $_SERVER['REQUEST_URI'] === $url;
 }
 

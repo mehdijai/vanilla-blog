@@ -8,7 +8,7 @@ class PostsRepository
 
         $posts = $db->query($query)->all();
 
-        $posts = array_map(function($post){
+        $posts = array_map(function ($post) {
             $post['post_categories'] = json_decode($post['post_categories'], true);
             return $post;
         }, $posts);

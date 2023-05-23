@@ -5,14 +5,14 @@ function component($name, $data = null)
     $t = debug_backtrace();
     $root = dirname($t[0]['file']);
     $base_root = "";
-    if(strpos($root, 'views') == false){
+    if (strpos($root, 'views') == false) {
         $base_root = merge_paths($base_root, 'views');
     }
-    if(strpos($root, 'components') == false){
+    if (strpos($root, 'components') == false) {
         $base_root .= merge_paths($base_root, 'components');
     }
     $base_root = merge_paths($base_root, "{$name}.php");
-    if($data != null){
+    if ($data != null) {
         extract($data);
     }
     require(merge_paths($root, $base_root));
@@ -37,7 +37,7 @@ function merge_paths($path1, $path2)
     });
     $first = array_shift($paths);
     $last = array_pop($paths);
-    $paths = array_filter($paths); // clean empty elements to prevent double slashes
+    $paths = array_filter($paths);
     array_unshift($paths, $first);
     $paths[] = $last;
     return implode('/', $paths);
