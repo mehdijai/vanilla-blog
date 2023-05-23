@@ -6,11 +6,11 @@
         <?php endforeach ?>
     </div>
     <div class="mt-2">
-        <a class="text-2xl text-gray-700 font-bold hover:underline" href="#"><?= $post["title"] ?></a>
+        <a class="text-2xl text-gray-700 font-bold hover:underline" href="/posts/<?= $post['slug'] ?>"><?= $post["title"] ?></a>
         <p class="mt-2 text-gray-600"><?= $post["body"] ?></p>
     </div>
     <div class="flex justify-between items-center mt-4">
-        <a class="text-blue-500 hover:underline" href="/<?= $post['slug'] ?>">Read more</a>
+        <a class="text-blue-500 hover:underline" href="/posts/<?= $post['slug'] ?>">Read more</a>
         <div>
             <a class="flex items-center" href="/authors/<?= $post['author_slug'] ?>">
                 <img class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block" src="<?= $post['profile_picture'] ?>" alt="avatar">

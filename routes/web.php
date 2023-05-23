@@ -3,7 +3,9 @@
 $router = Router::getInstance();
 
 $router->get("/", "Home");
-$router->get("/posts/create", "Post", "create");
 $router->get("/about", "About");
 $router->get("/contact", "Contact");
-$router->get("/{slug}", "Post", "view");
+$router->get("/posts/create", "Post", "create");
+$router->post("/posts/store", "Post", "store");
+$router->get("/posts/{slug}", "Post", "view");
+$router->notFound();

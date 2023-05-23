@@ -22,4 +22,13 @@ class PostsRepository
 
         return $db->query($query, compact('slug'))->findOrFail();
     }
+
+    public static function store(Database $db, array $data){
+        $query = 'insert into posts 
+                (author_id, title, body, description, thumbnail, slug, module_id) 
+                values 
+                (:author_id, :title, :body, :description, :thumbnail, :slug, :module_id);';
+
+        $db->query($query, $data);
+    }
 }

@@ -54,7 +54,6 @@ class Router
         $instance = new $className($data);
         extract($data);
         call_user_func(array($instance, $function));
-        exit();
     }
 
     public function simpleRoute($route, $controller, $function)
@@ -71,6 +70,7 @@ class Router
 
         if ($reqUri == $route) {
             $this->render($controller, $function, compact('queries'));
+            exit();
         }
     }
     public function add($method, $route, $controller, $function)
@@ -137,7 +137,11 @@ class Router
             $this->render($controller, $function, compact('queries', 'params'));
             exit();
         }
+    }
 
+    function notFound()
+    {
         abort(404);
+        exit();
     }
 }
