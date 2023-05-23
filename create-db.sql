@@ -4,6 +4,7 @@ use msblog_mini;
 CREATE TABLE `authors`(
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` VARCHAR(255) NOT NULL,
+	`slug` VARCHAR(255) NOT NULL,
 	`email` VARCHAR(255) NOT NULL UNIQUE,
 	`password` VARCHAR(255) NOT NULL,
 	`email_verified` BOOL DEFAULT 0,
@@ -17,15 +18,6 @@ CREATE TABLE `categories`(
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
 	`title` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
-	`slug` VARCHAR(255) NOT NULL UNIQUE,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE `tags`(
-	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
-	`title` VARCHAR(255) NOT NULL,
 	`slug` VARCHAR(255) NOT NULL UNIQUE,
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,13 +61,20 @@ CREATE TABLE `category_post`(
     FOREIGN KEY (`post_id`) REFERENCES posts(id) ON DELETE CASCADE
 );
 
-CREATE TABLE `post_tag`(
-	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
-    `post_id` INT,
-    `tag_id` INT,
-	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (id),
-    FOREIGN KEY (`post_id`) REFERENCES posts(id) ON DELETE CASCADE,
-    FOREIGN KEY (`tag_id`) REFERENCES tags(id) ON DELETE CASCADE
-);
+-- A view to return all posts with author included and categories names
+CREATE VIEW V_AllPosts AS
+SELECT
+    posts.*,
+    authors.name AS author,
+    authors.profile_picture AS profile_picture,
+    IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
+FROM
+    posts
+    INNER JOIN authors ON posts.author_id = authors.id
+    LEFT JOIN category_post ON posts.id = category_post.post_id
+    LEFT JOIN categories ON category_post.category_id = categories.id
+GROUP BY
+    posts.id
+ORDER BY
+	posts.created_at
+DESC;

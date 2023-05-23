@@ -23,7 +23,7 @@
             </div>
             <div class="mt-10 px-8">
                 <h1 class="mb-4 text-xl font-bold text-gray-700">Categories</h1>
-                <?php component("categories") ?>
+                <?php component("categories", compact('categories')) ?>
             </div>
         </div>
     </div>

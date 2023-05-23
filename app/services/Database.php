@@ -3,6 +3,7 @@
 class Database
 {
     private PDO $pdo;
+    private PDOStatement $statement;
 
     public function __construct()
     {
@@ -24,8 +25,25 @@ class Database
 
     public function query(string $query, $params = [])
     {
-        $statement = $this->pdo->prepare($query);
-        $statement->execute($params);
-        return $statement->fetchAll();
+        $this->statement = $this->pdo->prepare($query);
+        $this->statement->execute($params);
+        return $this;
+    }
+
+    public function find()
+    {
+        return $this->statement->fetch();
+        
+    }
+    public function findOrFail()
+    {
+        $result = $this->statement->fetch();
+        if(!$result){
+            abort(404);
+        }
+    }
+    public function all()
+    {
+        return $this->statement->fetchAll();
     }
 }
