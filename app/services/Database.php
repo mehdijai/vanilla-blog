@@ -37,9 +37,10 @@ class Database
     public function findOrFail()
     {
         $result = $this->statement->fetch();
-        if (!$result) {
+        if ($result == null || $result['id'] == null) {
             abort(404);
         }
+        return $result;
     }
     public function all()
     {

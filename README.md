@@ -1,4 +1,4 @@
-# MSBlog mini
+# Vanilla Blog
 
 Blog Made with vanilla PHP & TailwindCSS for styling.
 This projet focuses heavily on the PHP and the Backend.
@@ -15,4 +15,6 @@ create database vanilla_blog;
 
 ## Updates
 
+- View only non draft posts
+- Post page
 - Form Validation

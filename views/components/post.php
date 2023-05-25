@@ -1,4 +1,4 @@
-<div class="max-w-4xl px-10 py-6 bg-white rounded-lg shadow-md">
+<div class="w-full px-10 py-6 bg-white rounded-lg shadow-md">
     <div class="flex gap-3 items-center">
         <span class="font-light text-gray-600 mr-auto"><?= formatDate($post["created_at"]) ?></span>
         <?php foreach ($post["post_categories"] as $category) : ?>

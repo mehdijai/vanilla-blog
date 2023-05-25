@@ -1,5 +1,5 @@
 -- Active: 1670332519346@@127.0.0.1@3306
-use msblog_mini;
+use vanilla_blog;
 
 CREATE TABLE `authors`(
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
@@ -69,12 +69,15 @@ SELECT
     posts.*,
     authors.name AS author,
     authors.profile_picture AS profile_picture,
+	authors.slug AS author_slug,
     IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
 FROM
     posts
     INNER JOIN authors ON posts.author_id = authors.id
     LEFT JOIN category_post ON posts.id = category_post.post_id
     LEFT JOIN categories ON category_post.category_id = categories.id
+WHERE
+	posts.draft = 0
 GROUP BY
     posts.id
 ORDER BY

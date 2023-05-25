@@ -2,10 +2,23 @@
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        extract($this->data);
+        $db = new Database();
+
+        $posts = PostsRepository::all($db);
+
+        require("views/posts.view.php");
+    }
     public function view()
     {
         extract($this->data);
+        $db = new Database();
+
+        $post = PostsRepository::get($db, $params['slug']);
         require("views/post.view.php");
+
     }
     public function create()
     {
@@ -68,7 +81,7 @@ class PostController extends Controller
             $data = [];
             $errors = [];
             unset($_POST);
-            header("Location: /");
+            header("Location: /posts");
         }
 
         require("views/create-post.view.php");

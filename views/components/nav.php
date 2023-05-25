@@ -21,7 +21,7 @@
       </form>
       <button type="button" class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
         <span class="sr-only">Open user menu</span>
-        <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+        <img class="w-8 h-8 object-cover rounded-full" src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=731&q=80" alt="user photo">
       </button>
       <!-- Dropdown menu -->
       <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
@@ -68,10 +68,10 @@
           <a href="/about" class="<?= isUrl('/about') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/about') ? "aria-current='page'" : null ?>>About</a>
         </li>
         <li>
-          <a href="/add-provider" class="<?= isUrl('/posts') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/posts') ? "aria-current='page'" : null ?>>Posts</a>
+          <a href="/posts" class="<?= isUrl('/posts') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/posts') ? "aria-current='page'" : null ?>>Posts</a>
         </li>
         <li>
-          <a href="/add-provider" class="<?= isUrl('/modules') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/modules') ? "aria-current='page'" : null ?>>Modules</a>
+          <a href="/modules" class="<?= isUrl('/modules') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/modules') ? "aria-current='page'" : null ?>>Modules</a>
         </li>
         <li>
           <a href="/contact" class="<?= isUrl('/contact') ? 'text-blue-600' : 'text-gray-900' ?> block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" <?= isUrl('/contact') ? "aria-current='page'" : null ?>>Contact</a>

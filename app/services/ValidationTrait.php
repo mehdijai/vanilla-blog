@@ -32,7 +32,7 @@ trait ValidationTrait
     }
     public function file($value)
     {
-        return isset($value) && isset($value["tmp_name"]) && getimagesize($value["tmp_name"]);
+        return isset($value) && isset($value["tmp_name"]) && $value["tmp_name"] != null && getimagesize($value["tmp_name"]);
     }
 
     private $rules = [
