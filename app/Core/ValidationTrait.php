@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Core;
+
+use ReflectionMethod;
+
 trait ValidationTrait
 {
     public function string($value)

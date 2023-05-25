@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Core;
+
+use Exception;
+
 class FileSystem
 {
     private const TARGET_DIR = "public/uploads/";

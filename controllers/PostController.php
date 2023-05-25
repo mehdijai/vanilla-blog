@@ -1,15 +1,23 @@
 <?php
 
+namespace Controllers;
+
+use App\Core\Str;
+use App\Core\Database;
+use App\Core\Validator;
+use App\Core\FileSystem;
+use Controllers\Controller;
+use App\Repositories\PostsRepository;
+
 class PostController extends Controller
 {
     public function index()
     {
-        extract($this->data);
         $db = new Database();
 
         $posts = PostsRepository::all($db);
 
-        require("views/posts.view.php");
+        view("posts", compact('posts'));
     }
     public function view()
     {
@@ -17,13 +25,11 @@ class PostController extends Controller
         $db = new Database();
 
         $post = PostsRepository::get($db, $params['slug']);
-        require("views/post.view.php");
-
+        view("post", compact('post'));
     }
     public function create()
     {
-        extract($this->data);
-        require("views/create-post.view.php");
+        view("create-post", $this->data);
     }
     public function store()
     {
@@ -84,6 +90,10 @@ class PostController extends Controller
             header("Location: /posts");
         }
 
-        require("views/create-post.view.php");
+        view("create-post", [
+            'data' => $data,
+            'errors' => $errors,
+            ...$this->data,
+        ]);
     }
 }

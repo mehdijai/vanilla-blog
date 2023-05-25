@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 class Controller
 {
     protected $data = [];

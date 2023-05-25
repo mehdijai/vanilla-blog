@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 class Str
 {
     public static function toKebabCase(string $input)

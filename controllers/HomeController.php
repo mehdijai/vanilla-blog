@@ -1,5 +1,13 @@
 <?php
 
+namespace Controllers;
+
+use App\Core\Database;
+use Controllers\Controller;
+use App\Repositories\PostsRepository;
+use App\Repositories\AuthorsRepository;
+use App\Repositories\CategoriesRepository;
+
 class HomeController extends Controller
 {
     public function index()
@@ -12,7 +20,13 @@ class HomeController extends Controller
 
         $categories = CategoriesRepository::all($db);
 
-        extract($this->data);
-        require("views/home.view.php");
+        view("home", [
+            ...compact(
+                "authors",
+                "posts",
+                "categories",
+            ),
+            ...$this->data
+        ]);
     }
 }

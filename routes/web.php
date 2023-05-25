@@ -1,5 +1,9 @@
 <?php
 
+namespace Routes;
+
+use App\Core\Router;
+
 $router = Router::getInstance();
 
 $router->get("/", "Home");

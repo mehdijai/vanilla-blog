@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Repositories;
+
+use App\Core\Database;
+
 class PostsRepository
 {
     public static function all(Database $db)

@@ -1,10 +1,11 @@
 <?php
 
+namespace Controllers;
+
 class AboutController extends Controller
 {
     public function index()
     {
-        extract($this->data);
-        require("views/about.view.php");
+        view("about");
     }
 }

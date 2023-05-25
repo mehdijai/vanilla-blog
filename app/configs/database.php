@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Config;
+
 return [
     'db' => 'mysql',
     'host' => 'localhost',

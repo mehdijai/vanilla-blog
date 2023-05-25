@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 class Router
 {
     private $method;
@@ -49,8 +51,8 @@ class Router
 
     private function render($controller, $function, $data = [])
     {
-        require("controllers/" . $controller . "Controller.php");
-        $className = $controller . "Controller";
+        require base_path("controllers/" . $controller . "Controller.php");
+        $className = 'Controllers\\' . $controller . "Controller";
         $instance = new $className($data);
         extract($data);
         call_user_func(array($instance, $function));

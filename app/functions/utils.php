@@ -27,13 +27,13 @@ function dd($value)
 function abort($code)
 {
     http_response_code($code);
-    require("views/$code.view.php");
+    view($code);
     die();
 }
 
 function isUrl($url)
 {
-    return $_SERVER['REQUEST_URI'] === $url;
+    return parse_url($_SERVER['REQUEST_URI'])['path'] === $url;
 }
 
 function formatDate($date)
@@ -62,15 +62,30 @@ function between(int | float $value, int | float $min, int | float $max, bool $s
     return $isMin && $isMax;
 }
 
-function array_find($needle, array $haystack)
-{
-    $filtered = array_filter($haystack, function ($person) use ($needle) {
-        return $person['name'] === $needle;
-    });
 
-    if (!empty($filtered)) {
-        return reset($filtered);
-    } else {
-        return null;
+function base_path($path)
+{
+    return BASE_PATH . $path;
+}
+
+function component($name, $data = null)
+{
+    if ($data != null) {
+        extract($data);
     }
+
+    require base_path("views/components/" . str_replace('.', DIRECTORY_SEPARATOR, $name) . '.php');
+}
+
+
+function view($viewName, array $data = [])
+{
+    extract($data);
+    $viewName = str_replace(".", DIRECTORY_SEPARATOR, $viewName);
+    require base_path("views/{$viewName}.view.php");
+}
+
+function config($name)
+{
+    return require base_path("app/configs/" . $name . '.php');
 }

@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Core;
+
+use PDO;
+use PDOStatement;
+
 class Database
 {
     private PDO $pdo;
@@ -7,7 +12,7 @@ class Database
 
     public function __construct()
     {
-        $config = require("app/config/database.php");
+        $config = config("database");
 
         $connection_string = $config['db'] . ":" . http_build_query($config, '', ';');
 

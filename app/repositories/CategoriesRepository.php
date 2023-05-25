@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Repositories;
+
+use App\Core\Database;
+
 class CategoriesRepository
 {
     public static function all(Database $db)
