@@ -41,3 +41,36 @@ function formatDate($date)
     $formattedDate = date('d/m/Y', strtotime($date));
     return $formattedDate;
 }
+
+function between(int | float $value, int | float $min, int | float $max, bool $strictly_greater = false, bool $strictly_less = false)
+{
+    $isMin = false;
+    $isMax = false;
+
+    if ($strictly_greater) {
+        $isMin = $value > $min;
+    } else {
+        $isMin = $value >= $min;
+    }
+
+    if ($strictly_less) {
+        $isMax = $value < $max;
+    } else {
+        $isMax = $value <= $max;
+    }
+
+    return $isMin && $isMax;
+}
+
+function array_find($needle, array $haystack)
+{
+    $filtered = array_filter($haystack, function ($person) use ($needle) {
+        return $person['name'] === $needle;
+    });
+
+    if (!empty($filtered)) {
+        return reset($filtered);
+    } else {
+        return null;
+    }
+}

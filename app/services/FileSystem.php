@@ -10,7 +10,7 @@ class FileSystem
     {
         if (!is_dir(self::TARGET_DIR)) {
             if (!mkdir(self::TARGET_DIR, 0777, true)) {
-                echo "Failed to create directory.";
+                throw new Exception("Failed to create directory.");
             }
         }
 
@@ -19,40 +19,36 @@ class FileSystem
 
     public static function uploadImage($image, string $fileName = null)
     {
+
         $imageFileType = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
         $target_file = self::getUploadDir() . ($fileName == null ? basename($image["name"]) : $fileName . "." . $imageFileType);
 
-        // Check if image file is a actual image or fake image
         $valid = true;
         $check = getimagesize($image["tmp_name"]);
         if ($check !== false) {
             $valid = true;
         } else {
-            echo "File is not an image.\n";
+            throw new Exception("File is not an image.");
             $valid = false;
         }
 
-        // Check file size
         if ($image["size"] > self::IMAGE_MAX_SIZE) {
-            echo "Sorry, your file is too large.\n";
+            throw new Exception("Sorry, your file is too large.");
             $valid = false;
         }
 
-        // Allow certain file formats
         if (
             !in_array($imageFileType, self::IMAGE_ALLOWED_TYPES)
         ) {
-            echo "Sorry, only " . join(" & ", self::IMAGE_ALLOWED_TYPES) . " files are allowed.\n";
+            throw new Exception("Sorry, only " . join(" & ", self::IMAGE_ALLOWED_TYPES) . " files are allowed.");
             $valid = false;
         }
 
-        // Check if $uploadOk is set to 0 by an error
         if ($valid == false) {
-            echo "Sorry, your file was not uploaded.\n";
-            // if everything is ok, try to upload file
+            throw new Exception("Sorry, your file was not uploaded.");
         } else {
             if (!move_uploaded_file($image["tmp_name"], $target_file)) {
-                echo "Sorry, there was an error uploading your file.\n";
+                throw new Exception("Sorry, there was an error uploading your file.");
             }
         }
 
