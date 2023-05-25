@@ -10,16 +10,12 @@ class Str
     }
     public static function toCamelCase(string $input, bool $withCapital = false)
     {
-        // Replace whitespace and hyphens with spaces
         $output = preg_replace('/[\s-]+/', ' ', $input);
 
-        // Convert to title case
         $output = ucwords($output);
 
-        // Remove spaces and hyphens
         $output = str_replace(array(' ', '-'), '', $output);
 
-        // Convert first character to lowercase
         if (!$withCapital) {
             $output = lcfirst($output);
         }
