@@ -17,13 +17,7 @@
 			</div>
 			<div>
 				<label class="block text-sm font-semibold leading-6 text-gray-900" for="thumbnail">Thumbnail</label>
-				<label for=thumbnail class="rounded-md ring-1 ring-inset ring-gray-300 border border-gray-100 bg-white hover:bg-indigo-100 p-2.5 mt-2 flex items-center gap-1 cursor-pointer">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-white stroke-indigo-600" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-					</svg>
-					<span class="text-gray-500 font-medium text-sm">Upload file</span>
-					<input class="hidden" aria-describedby="user_avatar_help" id="thumbnail" name="thumbnail" type="file">
-				</label>
+				<input id="thumbnail" name="thumbnail" class="block mt-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file">
 				<?php if (isset($errors['thumbnail'])) : ?>
 					<span class="text-red-500 text-xs font-medium"><?= $errors['thumbnail'] ?></span>
 				<?php endif ?>

@@ -1,17 +1,6 @@
 <?php
 require 'ValidationTrait.php';
 
-/*
-
-$values = [
-    'title' => 'title';
-]
-$requirement = [
-    'title' => ['string', 'max:200', 'min:8'],
-    'draft' => ['boolean'],
-]
- */
-
 class Validator
 {
     use ValidationTrait;

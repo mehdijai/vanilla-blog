@@ -23,7 +23,7 @@ class PostController extends Controller
             $data['draft'] = false;
         }
 
-        $data['thumbnail'] = $_FILES['thumbnail'];
+        $data['thumbnail'] = $_FILES['thumbnail'] ?? null;
 
         $errors = [];
 
