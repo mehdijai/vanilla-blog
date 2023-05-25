@@ -108,4 +108,18 @@ class PostController extends Controller
             dd($ex->getMessage());
         }
     }
+
+    public function updateDraftState()
+    {
+        try {
+            $db = new Database();
+            PostsRepository::updateDraftState($db, [
+                'id' => $_POST['id'],
+                'draft' => !$_POST['draft']
+            ]);
+            header("location: /posts");
+        } catch (Exception $ex) {
+            dd($ex->getMessage());
+        }
+    }
 }

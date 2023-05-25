@@ -15,5 +15,4 @@ create database vanilla_blog;
 
 ## Updates
 
-- Delete post.
-- Inject `_method` to the form, to make the router know we are using `DELETE` request.
+- Update Draft state

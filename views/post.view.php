@@ -55,14 +55,19 @@
 					</button>
 				</form>
 			</span>
-
+			
 			<span class="sm:ml-3">
-				<button type="button" class="<?= $post['draft'] ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-teal-600 hover:bg-teal-500' ?> inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-					<span class="material-symbols-rounded mr-2 text-xl">
-						<?= $post['draft'] ? 'check' : 'place_item' ?>
-					</span>
-					<?= $post['draft'] ? 'Publish' : 'Set to draft' ?>
-				</button>
+				<form action="/posts" method="post">
+					<input type="hidden" name="_method" value="PUT">
+					<input type="hidden" name="id" value="<?= $post['id'] ?>">
+					<input type="hidden" name="draft" value="<?= $post['draft'] ?>">
+					<button class="<?= $post['draft'] ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-teal-600 hover:bg-teal-500' ?> inline-flex items-center rounded-md px-3 py-1.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+						<span class="material-symbols-rounded mr-2 text-xl">
+							<?= $post['draft'] ? 'check' : 'place_item' ?>
+						</span>
+						<?= $post['draft'] ? 'Publish' : 'Set to draft' ?>
+					</button>
+				</form>
 			</span>
 
 			<!-- Dropdown -->

@@ -61,4 +61,13 @@ class PostsRepository
 
         $db->query($query, $data);
     }
+
+    public static function updateDraftState(Database $db, array $data)
+    {
+        $data['draft'] = (int)$data['draft'];
+
+        $query = 'update posts set draft = :draft where id = :id';
+
+        $db->query($query, $data);
+    }
 }
