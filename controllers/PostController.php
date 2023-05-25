@@ -55,18 +55,20 @@ class PostController extends Controller
                 $data['thumbnail'] = $thumbnail_file;
                 if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                     $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
-                } else {
-                    $data = [];
-                    $errors = [];
-                    unset($_POST);
-                    $db = new Database();
-                    PostsRepository::store($db, $data);
                 }
             } catch (\Exception $ex) {
                 $errors['thumbnail'] = $ex->getMessage();
                 $thumbnail_file = null;
             }
+        }
 
+        if (empty($errors)) {
+            $db = new Database();
+            PostsRepository::store($db, $data);
+            $data = [];
+            $errors = [];
+            unset($_POST);
+            header("Location: /");
         }
 
         require("views/create-post.view.php");

@@ -25,9 +25,9 @@ class PostsRepository
 
     public static function store(Database $db, array $data){
         $query = 'insert into posts 
-                (author_id, title, body, description, thumbnail, slug, module_id) 
+                (author_id, title, body, description, thumbnail, slug, module_id, draft) 
                 values 
-                (:author_id, :title, :body, :description, :thumbnail, :slug, :module_id);';
+                (:author_id, :title, :body, :description, :thumbnail, :slug, :module_id, :draft);';
 
         $db->query($query, $data);
     }

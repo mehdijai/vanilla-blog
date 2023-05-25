@@ -4,15 +4,15 @@ trait ValidationTrait
 {
     public function string($value)
     {
-        return $value != null && strlen($value) !== 0;
+        return $value != null && strlen(trim($value)) !== 0;
     }
     public function min($value, $min)
     {
-        return  $value != null && strlen($value) >= $min;
+        return  $value != null && strlen(trim($value)) >= $min;
     }
     public function max($value, $min)
     {
-        return  $value != null && strlen($value) <= $min;
+        return  $value != null && strlen(trim($value)) <= $min;
     }
     public function between($value, $min, $max)
     {
