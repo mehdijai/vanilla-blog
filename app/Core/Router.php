@@ -11,7 +11,7 @@ class Router
 
     public function __construct()
     {
-        $this->method = $_SERVER["REQUEST_METHOD"];
+        $this->method = strtoupper($_POST['_method'] ?? $_SERVER["REQUEST_METHOD"]);
         $this->uri = preg_replace("/(^\/)|(\/$)/", "", parse_url($_SERVER['REQUEST_URI'])['path']);
     }
 

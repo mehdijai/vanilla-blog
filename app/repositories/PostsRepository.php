@@ -46,10 +46,18 @@ class PostsRepository
 
     public static function store(Database $db, array $data)
     {
+        $data['draft'] = (int)$data['draft'];
         $query = 'insert into posts 
                 (author_id, title, body, description, thumbnail, slug, module_id, draft) 
                 values 
                 (:author_id, :title, :body, :description, :thumbnail, :slug, :module_id, :draft);';
+
+        $db->query($query, $data);
+    }
+
+    public static function delete(Database $db, array $data)
+    {
+        $query = 'delete from posts where id = :id';
 
         $db->query($query, $data);
     }

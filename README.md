@@ -15,14 +15,5 @@ create database vanilla_blog;
 
 ## Updates
 
-- Autoload & Namespaces
-
-- to isolate the logic code, we serve the project from `public` folder. With this structure, we can't access the other files with GET requests like [GET: /app/configs/database.php].
-
-- This update will require a lot of changes in the code. So I created some helper functions:
-    - `view()`: to load a view file with its name, and pass the required data,
-    - `component()`: to load a component,
-    - `config()`: to get a config file with its name,
-    - `base_path()`: to get the base path of a path,
-
-- I used the namespace with php autoload function to load the class files.
+- Delete post.
+- Inject `_method` to the form, to make the router know we are using `DELETE` request.

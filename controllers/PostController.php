@@ -8,6 +8,7 @@ use App\Core\Validator;
 use App\Core\FileSystem;
 use Controllers\Controller;
 use App\Repositories\PostsRepository;
+use Exception;
 
 class PostController extends Controller
 {
@@ -95,5 +96,16 @@ class PostController extends Controller
             'errors' => $errors,
             ...$this->data,
         ]);
+    }
+
+    public function destroy()
+    {
+        try {
+            $db = new Database();
+            PostsRepository::delete($db, ['id' => $_POST['id']]);
+            header("location: /posts");
+        } catch (Exception $ex) {
+            dd($ex->getMessage());
+        }
     }
 }
