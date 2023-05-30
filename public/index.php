@@ -1,6 +1,7 @@
 <?php
 
 const BASE_PATH = __DIR__ . '/../';
+const PUBLIC_PATH = __DIR__;
 require BASE_PATH . "app/functions/utils.php";
 
 spl_autoload_register(function($class){

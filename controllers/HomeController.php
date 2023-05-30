@@ -12,13 +12,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $db = new Database();
-
-        $authors = AuthorsRepository::all($db);
-
-        $posts = PostsRepository::all($db);
-
-        $categories = CategoriesRepository::all($db);
+        $authors = AuthorsRepository::all();
+        $posts = PostsRepository::all();
+        $categories = CategoriesRepository::all();
 
         view("home", [
             ...compact(

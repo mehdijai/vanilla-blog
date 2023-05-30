@@ -2,18 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Core\Database;
-
-class CategoriesRepository
+class CategoriesRepository extends Repository
 {
-    public static function all(Database $db)
+    public static function all()
     {
         $query = 'select title, slug from categories order by created_at desc;';
 
-        return $db->query($query)->all();
+        return self::db()->query($query)->all();
     }
 
-    public static function post_by_category(Database $db, string $slug)
+    public static function post_by_category(string $slug)
     {
         $query = 'select c.*, p.* 
                 from categories
@@ -21,6 +19,6 @@ class CategoriesRepository
                 inner join posts on cp.post_id = p.id
                 where c.slug = :slug';
 
-        return $db->query($query, compact('slug'))->findOrFail();
+        return self::db()->query($query, compact('slug'))->findOrFail();
     }
 }

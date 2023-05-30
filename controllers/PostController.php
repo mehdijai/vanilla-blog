@@ -14,18 +14,14 @@ class PostController extends Controller
 {
     public function index()
     {
-        $db = new Database();
-
-        $posts = PostsRepository::all($db);
+        $posts = PostsRepository::all();
 
         view("posts", compact('posts'));
     }
     public function view()
     {
         extract($this->data);
-        $db = new Database();
-
-        $post = PostsRepository::get($db, $params['slug']);
+        $post = PostsRepository::get($params['slug']);
         view("post", compact('post'));
     }
 
@@ -72,7 +68,7 @@ class PostController extends Controller
             $thumbnail_file = null;
 
             try {
-                $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], base64_encode($data['slug']));
+                $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], Str::randomString($data['slug']));
                 $data['thumbnail'] = $thumbnail_file;
                 if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                     $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
@@ -84,8 +80,8 @@ class PostController extends Controller
         }
 
         if (empty($errors)) {
-            $db = new Database();
-            PostsRepository::store($db, $data);
+
+            PostsRepository::store($data);
             $data = [];
             $errors = [];
             unset($_POST);
@@ -102,9 +98,7 @@ class PostController extends Controller
     public function update()
     {
         extract($this->data);
-        $db = new Database();
-
-        $post = PostsRepository::get($db, $params['slug']);
+        $post = PostsRepository::get($params['slug']);
         view("update-post", compact('post'));
     }
 
@@ -152,7 +146,7 @@ class PostController extends Controller
                 $thumbnail_file = null;
 
                 try {
-                    $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], base64_encode($data['slug']));
+                    $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], Str::randomString($data['slug']));
                     $data['thumbnail'] = $thumbnail_file;
                     if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                         $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
@@ -165,8 +159,7 @@ class PostController extends Controller
         }
 
         if (empty($errors)) {
-            $db = new Database();
-            PostsRepository::update($db, $data);
+            PostsRepository::update($data);
             $data = [];
             $errors = [];
             unset($_POST);
@@ -183,8 +176,7 @@ class PostController extends Controller
     public function destroy()
     {
         try {
-            $db = new Database();
-            PostsRepository::delete($db, ['id' => $_POST['id']]);
+            PostsRepository::delete(['id' => $_POST['id']]);
             header("location: /posts");
         } catch (Exception $ex) {
             dd($ex->getMessage());
@@ -194,8 +186,7 @@ class PostController extends Controller
     public function updateDraftState()
     {
         try {
-            $db = new Database();
-            PostsRepository::updateDraftState($db, [
+            PostsRepository::updateDraftState([
                 'id' => $_POST['id'],
                 'draft' => !$_POST['draft']
             ]);

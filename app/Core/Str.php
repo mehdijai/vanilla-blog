@@ -30,4 +30,20 @@ class Str
         $output = strtolower($output);
         return $output;
     }
+    public static function randomString(string $base = "", int $length = 10)
+    {
+        if (strlen($base) != 0) {
+            $base = base64_encode($base);
+            $length = 3;
+        }
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $string = '';
+        $charCount = strlen($characters);
+
+        for ($i = 0; $i < $length; $i++) {
+            $string .= $characters[rand(0, $charCount - 1)];
+        }
+
+        return $base . $string;
+    }
 }

@@ -68,6 +68,11 @@ function base_path($path)
     return BASE_PATH . $path;
 }
 
+function public_path($path)
+{
+    return PUBLIC_PATH . $path;
+}
+
 function component($name, $data = null)
 {
     if ($data != null) {

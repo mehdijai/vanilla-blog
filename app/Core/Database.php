@@ -7,7 +7,7 @@ use PDOStatement;
 
 class Database
 {
-    private PDO $pdo;
+    private PDO | null $pdo = null;
     private PDOStatement $statement;
 
     public function __construct()
@@ -30,18 +30,23 @@ class Database
 
     public function query(string $query, $params = [])
     {
-        $this->statement = $this->pdo->prepare($query);
-        $this->statement->execute($params);
-        return $this;
+        if ($this->pdo != null) {
+            $this->statement = $this->pdo->prepare($query);
+            $this->statement->execute($params);
+            return $this;
+        }
     }
 
     public function find()
     {
-        return $this->statement->fetch();
+        $data = $this->statement->fetch();
+        $this->close();
+        return $data;
     }
     public function findOrFail()
     {
         $result = $this->statement->fetch();
+        $this->close();
         if ($result == null || $result['id'] == null) {
             abort(404);
         }
@@ -49,6 +54,14 @@ class Database
     }
     public function all()
     {
-        return $this->statement->fetchAll();
+        $data = $this->statement->fetchAll();
+        $this->close();
+        return $data;
+    }
+    public function close()
+    {
+        if ($this->pdo != null) {
+            $this->pdo = null;
+        }
     }
 }

@@ -2,15 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Core\Database;
-
-class PostsRepository
+class PostsRepository extends Repository
 {
-    public static function all(Database $db)
+    public static function all()
     {
         $query = 'select * from V_AllPosts;';
 
-        $posts = $db->query($query)->all();
+        $posts = self::db()->query($query)->all();
 
         $posts = array_map(function ($post) {
             $post['post_categories'] = json_decode($post['post_categories'], true);
@@ -20,7 +18,7 @@ class PostsRepository
         return $posts;
     }
 
-    public static function get(Database $db, string $slug)
+    public static function get(string $slug)
     {
         $query = "SELECT
                     posts.*,
@@ -37,14 +35,14 @@ class PostsRepository
                     posts.draft = 0 AND
                     posts.slug = :slug;";
 
-        $post = $db->query($query, compact('slug'))->findOrFail();
+        $post = self::db()->query($query, compact('slug'))->findOrFail();
 
         $post['post_categories'] = json_decode($post['post_categories'], true);
 
         return $post;
     }
 
-    public static function store(Database $db, array $data)
+    public static function store(array $data)
     {
         $data['draft'] = (int)$data['draft'];
         $query = 'insert into posts 
@@ -52,37 +50,38 @@ class PostsRepository
                 values 
                 (:author_id, :title, :body, :description, :thumbnail, :slug, :module_id, :draft);';
 
-        $db->query($query, $data);
+        self::db()->query($query, $data)->close();
     }
 
-    public static function delete(Database $db, array $data)
+    public static function delete(array $data)
     {
         $query = 'delete from posts where id = :id';
 
-        $db->query($query, $data);
+        self::db()->query($query, $data)->close();
     }
 
-    public static function updateDraftState(Database $db, array $data)
+    public static function updateDraftState(array $data)
     {
         $data['draft'] = (int)$data['draft'];
 
         $query = 'update posts set draft = :draft where id = :id';
 
-        $db->query($query, $data);
+        self::db()->query($query, $data)->close();
     }
 
-    public static function update(Database $db, array $data)
+    public static function update(array $data)
     {
         $data['draft'] = (int)$data['draft'];
 
         $id = $data['id'];
 
+        
         unset($data['id']);
-        $post = $db->query('select * from posts where id = :id', compact('id'))->find();
+        $post = self::db()->query('select * from posts where id = :id', compact('id'))->find();
         $inter = array_intersect_key($data, $post);
-
+        
         $toUpdate = [];
-
+        
         foreach ($inter as $key => $value) {
             if ($value != $post[$key]) {
                 if ($key === 'thumbnail') {
@@ -94,13 +93,14 @@ class PostsRepository
                 }
             }
         }
-
+        
         $keys = array_map(fn ($key) => "{$key} = :{$key}", array_keys($toUpdate));
 
+        
         $query = "update posts set " . join(", ", $keys) . " where id = :id;";
-
+        
         $toUpdate = [...$toUpdate, ...compact("id")];
 
-        $db->query($query, $toUpdate);
+        self::db()->query($query, $toUpdate)->close();
     }
 }
