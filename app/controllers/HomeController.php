@@ -1,9 +1,7 @@
 <?php
 
-namespace Controllers;
+namespace App\Controllers;
 
-use App\Core\Database;
-use Controllers\Controller;
 use App\Repositories\PostsRepository;
 use App\Repositories\AuthorsRepository;
 use App\Repositories\CategoriesRepository;

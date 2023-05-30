@@ -1,7 +1,8 @@
 # Change log
 
 ## 30/05/2023
-- Update Upload Target Path
+- Refactor Controller.
+- Update Upload Target Path.
 - Refactor Database & Repository class architecture.
 - Update post.
 

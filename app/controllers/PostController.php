@@ -1,12 +1,10 @@
 <?php
 
-namespace Controllers;
+namespace App\Controllers;
 
 use App\Core\Str;
-use App\Core\Database;
 use App\Core\Validator;
 use App\Core\FileSystem;
-use Controllers\Controller;
 use App\Repositories\PostsRepository;
 use Exception;
 

@@ -51,8 +51,7 @@ class Router
 
     private function render($controller, $function, $data = [])
     {
-        require base_path("controllers/" . $controller . "Controller.php");
-        $className = 'Controllers\\' . $controller . "Controller";
+        $className = 'App\\Controllers\\' . $controller . "Controller";
         $instance = new $className($data);
         extract($data);
         call_user_func(array($instance, $function));
