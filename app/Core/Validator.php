@@ -18,10 +18,14 @@ class Validator
     public function validate($values)
     {
         foreach ($values as $key => $value) {
-            if(!isset($this->requirements[$key])){
-                return;
+            if (!isset($this->requirements[$key])) {
+                continue;
             }
             $reqs = $this->requirements[$key];
+            if (in_array("nullable", $reqs) && $value == null) {
+                $this->validated[$key] = $value;
+                continue;
+            }
             foreach ($reqs as $req) {
                 $method = $this->parseRequirement($req);
                 if (empty($method['args'])) {
@@ -46,7 +50,8 @@ class Validator
         return $this->validated;
     }
 
-    public function isValid(){
+    public function isValid()
+    {
         return empty($this->messages);
     }
 

@@ -35,12 +35,12 @@
 		<div class="mt-5 flex lg:ml-4 lg:mt-0">
 
 			<span class="hidden sm:block">
-				<button type="button" class="inline-flex items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+				<a href="/posts/update/<?= $post['slug'] ?>" class="inline-flex items-center rounded-md bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
 					<span class="material-symbols-rounded mr-2 text-xl">
 						border_color
 					</span>
 					Edit
-				</button>
+				</a>
 			</span>
 
 			<span class="ml-3 hidden sm:block">

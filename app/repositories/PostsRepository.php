@@ -70,4 +70,37 @@ class PostsRepository
 
         $db->query($query, $data);
     }
+
+    public static function update(Database $db, array $data)
+    {
+        $data['draft'] = (int)$data['draft'];
+
+        $id = $data['id'];
+
+        unset($data['id']);
+        $post = $db->query('select * from posts where id = :id', compact('id'))->find();
+        $inter = array_intersect_key($data, $post);
+
+        $toUpdate = [];
+
+        foreach ($inter as $key => $value) {
+            if ($value != $post[$key]) {
+                if ($key === 'thumbnail') {
+                    if ($value != null) {
+                        $toUpdate[$key] = $value;
+                    }
+                } else {
+                    $toUpdate[$key] = $value;
+                }
+            }
+        }
+
+        $keys = array_map(fn ($key) => "{$key} = :{$key}", array_keys($toUpdate));
+
+        $query = "update posts set " . join(", ", $keys) . " where id = :id;";
+
+        $toUpdate = [...$toUpdate, ...compact("id")];
+
+        $db->query($query, $toUpdate);
+    }
 }

@@ -30,12 +30,21 @@ trait ValidationTrait
     {
         return is_bool($value);
     }
+    public function int($value)
+    {
+        return is_int($value);
+    }
     public function required($value)
     {
         return isset($value);
     }
+    public function nullable($value)
+    {
+        return $value == true;
+    }
     public function file($value)
     {
+        if($value == null) return false;
         return isset($value) && isset($value["tmp_name"]) && $value["tmp_name"] != null && getimagesize($value["tmp_name"]);
     }
 
@@ -48,6 +57,7 @@ trait ValidationTrait
         'file' => ':attribute must be a valid file',
         'bool' => ':attribute must be a boolean',
         'required' => ':attribute is required',
+        'nullable' => ':attribute is nullable',
     ];
 
 

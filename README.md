@@ -13,6 +13,6 @@ create database vanilla_blog;
 ```
 4- Execute the sql scripts in `create-db.sql`,
 
-## Updates
+## Changelog
 
-- Update Draft state
+[View changelog](/CHANGELOG.md)
