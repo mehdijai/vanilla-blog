@@ -17,4 +17,8 @@ $router->post("/posts/create", "Post", "store");
 $router->patch("/posts/update", "Post", "edit");
 $router->get("/posts/update/{slug}", "Post", "update");
 $router->get("/posts/{slug}", "Post", "view");
+
+$router->get("/auth/login", "Auth", "login");
+$router->get("/auth/profile", "Auth", "show");
+$router->get("/auth/register", "Auth", "create");
 $router->notFound();
