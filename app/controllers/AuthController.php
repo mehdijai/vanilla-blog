@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Core\Validator;
+use App\Repositories\AuthRepository;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -26,7 +29,35 @@ class AuthController extends Controller
     // Register New User
     public function store()
     {
-        dd("Register");
+        $data = $_POST;
+
+        $errors = [];
+
+        $validator = new Validator([
+            'name' => ['string', 'max:100', 'min:3'],
+            'username' => ['string', 'max:100', 'min:3'],
+            'email' => ['string', 'max:100', 'min:4', 'email'],
+            'password' => ['string', 'min:8', 'upper', 'symbol', 'digit'],
+        ]);
+
+        $validator->validate($data);
+        if (!$validator->isValid()) {
+            $errors = $validator->getMessages();
+        } else {
+            $data = $validator->validated();
+            $data['password'] = password_hash($data["password"], PASSWORD_DEFAULT);
+            AuthRepository::store($data);
+            $data = [];
+            $errors = [];
+            unset($_POST);
+            header("Location: /posts");
+        }
+
+        view("auth.register", [
+            'data' => $data,
+            'errors' => $errors,
+            ...$this->data,
+        ]);
     }
 
     // Render Author Profile Page

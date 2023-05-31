@@ -1,5 +1,8 @@
 # Change log
 
+## 31/05/2023
+- Create a new author.
+
 ## 30/05/2023
 - Refactor Controller.
 - Update Upload Target Path.

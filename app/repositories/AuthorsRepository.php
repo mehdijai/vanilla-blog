@@ -6,7 +6,7 @@ class AuthorsRepository extends Repository
 {
     public static function all()
     {
-        $query = 'select a.id, a.name, a.slug, a.email, a.profile_picture, a.created_at, COUNT(p.author_id) as posts_count
+        $query = 'select a.id, a.name, a.username, a.email, a.profile_picture, a.created_at, COUNT(p.author_id) as posts_count
             from authors as a
             LEFT OUTER JOIN posts as p
             on p.author_id = a.id
@@ -16,10 +16,10 @@ class AuthorsRepository extends Repository
         return self::db()->query($query)->all();
     }
 
-    public static function get(string $slug)
+    public static function get(string $username)
     {
-        $query = 'select * from authors where slug = :slug';
+        $query = 'select * from authors where username = :username';
 
-        return self::db()->query($query, compact('slug'))->findOrFail();
+        return self::db()->query($query, compact('username'))->findOrFail();
     }
 }

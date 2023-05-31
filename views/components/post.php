@@ -14,7 +14,7 @@
         <div class="flex justify-between items-center mt-4">
             <a class="text-blue-500 hover:underline" href="/posts/<?= $post['slug'] ?>">Read more</a>
             <div>
-                <a class="flex items-center" href="/authors/<?= $post['author_slug'] ?>">
+                <a class="flex items-center" href="/authors/<?= $post['author_username'] ?>">
                     <img class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block" src="<?= $post['profile_picture'] ?>" alt="avatar">
                     <h1 class="text-gray-700 font-bold hover:underline"><?= $post["author"] ?></h1>
                 </a>

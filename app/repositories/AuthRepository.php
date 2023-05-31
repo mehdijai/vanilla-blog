@@ -1,3 +1,17 @@
 <?php
 
-class AuthRepository {}
+namespace App\Repositories;
+
+class AuthRepository extends Repository
+{
+
+    public static function store(array $data)
+    {
+        $query = 'insert into authors 
+                (name, username, email, password) 
+                values 
+                (:name, :username, :email, :password);';
+
+        self::db()->query($query, $data)->close();
+    }
+}

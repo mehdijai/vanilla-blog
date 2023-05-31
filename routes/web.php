@@ -21,4 +21,6 @@ $router->get("/posts/{slug}", "Post", "view");
 $router->get("/auth/login", "Auth", "login");
 $router->get("/auth/profile", "Auth", "show");
 $router->get("/auth/register", "Auth", "create");
+$router->post("/auth/register", "Auth", "store");
+
 $router->notFound();

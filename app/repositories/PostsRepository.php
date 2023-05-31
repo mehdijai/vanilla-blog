@@ -23,7 +23,7 @@ class PostsRepository extends Repository
         $query = "SELECT
                     posts.*,
                     authors.name AS author,
-                    authors.slug AS author_slug,
+                    authors.username AS author_username,
                     authors.profile_picture AS profile_picture,
                     IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
                 FROM
