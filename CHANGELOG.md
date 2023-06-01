@@ -1,6 +1,8 @@
 # Change log
 
 ## 01/06/2023
+- Guest vs Authenticated.
+- Default profile picture.
 - Validate unique attribute.
 - Save user to session.
 - Register new user.

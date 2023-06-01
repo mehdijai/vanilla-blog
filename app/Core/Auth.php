@@ -16,7 +16,6 @@ class Auth
         $errors = [];
         $data = $user->toArray();
 
-        // TODO: Validate inputs
         $validator = new Validator([
             'name' => ['string', 'max:100', 'min:3'],
             'username' => ['string', 'max:100', 'min:3'],
@@ -29,16 +28,13 @@ class Auth
             $errors = $validator->getMessages();
         } else {
             $data = $validator->validated();
-            // TODO: Hash password
             $data['password'] = password_hash($data["password"], PASSWORD_DEFAULT);
-            // TODO: Store the user
             $id = AuthRepository::store($data);
             $data['id'] = $id;
-            // TODO: Save the user to session
+            $data['profile_picture'] = App::resolve(Database::class)->query("select profile_picture from authors where id = :id", compact('id'))->find()['profile_picture'];
+
             Session::set('user', array_diff_key($data, array_flip($user->casts)));
-            // TODO: Unset post
             unset($_POST);
-            // TODO: Redirect to profile
             header("Location: " . self::PROFILE_PAGE);
             exit();
         }
@@ -57,5 +53,13 @@ class Auth
     public static function user()
     {
         return Session::get("user");
+    }
+    public static function me($id)
+    {
+        $user = static::user();
+        if ($user == null) {
+            return false;
+        }
+        return $user['id'] == $id;
     }
 }

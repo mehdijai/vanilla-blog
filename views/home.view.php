@@ -20,11 +20,11 @@
         </div>
         <div class="-mx-8 w-4/12 hidden lg:block">
             <div class="px-8">
-                <h1 class="mb-4 text-xl font-bold text-gray-700">Authors</h1>
+                <h1 class="mb-4 text-xl font-bold text-gray-700">Top Authors</h1>
                 <?php component("authors", compact('authors')) ?>
             </div>
             <div class="mt-10 px-8">
-                <h1 class="mb-4 text-xl font-bold text-gray-700">Categories</h1>
+                <h1 class="mb-4 text-xl font-bold text-gray-700">Top Categories</h1>
                 <?php component("categories", compact('categories')) ?>
             </div>
         </div>
