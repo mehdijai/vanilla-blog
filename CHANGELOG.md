@@ -1,6 +1,7 @@
 # Change log
 
 ## 01/06/2023
+- Implement Middleware
 - Profile
 - Login
 - Guest vs Authenticated.
