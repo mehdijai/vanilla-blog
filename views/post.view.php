@@ -96,7 +96,7 @@
 					<div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
 						<img class="mr-4 w-16 h-16 object-cover rounded-full" src="<?= $post['profile_picture'] ?>" alt="<?= $post['author'] ?>">
 						<div>
-							<a href="/authors/<?= $post['author_slug'] ?>" rel="author" class="text-xl font-bold text-gray-900 dark:text-white"><?= $post['author'] ?></a>
+							<a href="/authors/<?= $post['author_username'] ?>" rel="author" class="text-xl font-bold text-gray-900 dark:text-white"><?= $post['author'] ?></a>
 							<p class="text-base font-light text-gray-500 dark:text-gray-400"><time pubdate datetime="<?= formatDate($post['created_at']) ?>" title="<?= $post['created_at'] ?>"><?= formatDate($post['created_at']) ?></time></p>
 						</div>
 					</div>

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Str;
 use App\Core\Validator;
 use App\Core\FileSystem;
+use App\Core\Session;
 use App\Repositories\PostsRepository;
 use Exception;
 
@@ -60,7 +61,7 @@ class PostController extends Controller
             $data['description'] = trim(htmlspecialchars($data['description']));
             $data['body'] = trim(htmlspecialchars($data['body']));
             $data["slug"] = trim(Str::toKebabCase($data['title']));
-            $data["author_id"] = 1;
+            $data["author_id"] = Session::get("user_id");
             $data["module_id"] = null;
 
             $thumbnail_file = null;
@@ -137,7 +138,7 @@ class PostController extends Controller
             $data['description'] = trim(htmlspecialchars($data['description']));
             $data['body'] = trim(htmlspecialchars($data['body']));
             $data["slug"] = trim(Str::toKebabCase($data['title']));
-            $data["author_id"] = 1;
+            $data["author_id"] = Session::get("user_id");
             $data["module_id"] = null;
 
             if ($data['thumbnail'] != null) {

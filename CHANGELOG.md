@@ -1,5 +1,9 @@
 # Change log
 
+## 01/06/2023
+- Implement Service Container.
+- Use Session to author id.
+
 ## 31/05/2023
 - Create a new author.
 

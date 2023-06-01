@@ -8,4 +8,5 @@ spl_autoload_register(function($class){
     require base_path(str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php');
 });
 
+require BASE_PATH . "app/bootstrap.php";
 require base_path("routes/web.php");
