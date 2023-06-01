@@ -1,6 +1,9 @@
 # Change log
 
 ## 01/06/2023
+- Validate unique attribute.
+- Save user to session.
+- Register new user.
 - Implement Service Container.
 - Use Session to author id.
 

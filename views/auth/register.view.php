@@ -2,9 +2,9 @@
 
 <main class="grid place-items-center bg-white px-6 py-12 sm:py-16 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm col-span-full">
-        <h2 class="my-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Add a new author</h2>
+        <h2 class="my-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register to a new account</h2>
     </div>
-    <form method="POST" action="" class="min-w-[40%]" novalidate>
+    <form method="POST" action="" class="min-w-[40%]">
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
                 <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -54,9 +54,14 @@
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create</button>
+            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register</button>
         </div>
     </form>
+
+    <p class="mt-10 text-center text-sm text-gray-500">
+        Already a member
+        <a href="/auth/login" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Log in</a>
+    </p>
 </main>
 
 

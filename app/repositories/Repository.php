@@ -7,7 +7,7 @@ use App\Core\Database;
 
 class Repository
 {
-    protected static function db()
+    protected static function db(): Database
     {
         return App::resolve(Database::class);
     }

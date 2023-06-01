@@ -12,6 +12,6 @@ class AuthRepository extends Repository
                 values 
                 (:name, :username, :email, :password);';
 
-        self::db()->query($query, $data)->close();
+        return self::db()->query($query, $data)->lastInsertId();
     }
 }

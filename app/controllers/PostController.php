@@ -85,6 +85,7 @@ class PostController extends Controller
             $errors = [];
             unset($_POST);
             header("Location: /posts");
+            exit();
         }
 
         view("create-post", [
@@ -163,6 +164,7 @@ class PostController extends Controller
             $errors = [];
             unset($_POST);
             header("Location: /posts");
+            exit();
         }
 
         view("update-post", [
@@ -177,6 +179,7 @@ class PostController extends Controller
         try {
             PostsRepository::delete(['id' => $_POST['id']]);
             header("location: /posts");
+            exit();
         } catch (Exception $ex) {
             dd($ex->getMessage());
         }
@@ -190,6 +193,7 @@ class PostController extends Controller
                 'draft' => !$_POST['draft']
             ]);
             header("location: /posts");
+            exit();
         } catch (Exception $ex) {
             dd($ex->getMessage());
         }

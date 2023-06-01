@@ -33,7 +33,7 @@
 
     <p class="mt-10 text-center text-sm text-gray-500">
       Wanna be a member?
-      <a href="/contact" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Contact us</a>
+      <a href="/auth/register" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Create a new account</a>
     </p>
   </div>
 </div>
