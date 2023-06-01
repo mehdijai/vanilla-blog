@@ -1,6 +1,7 @@
 # Change log
 
 ## 01/06/2023
+- Login
 - Guest vs Authenticated.
 - Default profile picture.
 - Validate unique attribute.

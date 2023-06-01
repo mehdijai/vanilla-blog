@@ -4,10 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Auth;
 use App\Core\Session;
-use App\Core\Validator;
 use App\Models\User;
-use App\Repositories\AuthRepository;
-use Exception;
 
 class AuthController extends Controller
 {
@@ -18,9 +15,11 @@ class AuthController extends Controller
     }
 
     // Login User
-    public function Authenticate()
+    public function authenticate()
     {
-        dd("Login");
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        Auth::login($email, $password);
     }
 
     // Render Create New User Page

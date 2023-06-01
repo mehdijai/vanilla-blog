@@ -46,6 +46,44 @@ class Auth
     }
     public static function login(string $email, string $password)
     {
+        $errors = [];
+
+        $validator = new Validator([
+            'email' => ['string', 'max:100', 'min:4', 'email'],
+            'password' => ['string', 'min:8'],
+        ]);
+
+        $validator->validate(compact('email', 'password'));
+
+        if (!$validator->isValid()) {
+            $errors = $validator->getMessages();
+        } else {
+
+            $db = App::resolve(Database::class);
+            $user = $db->query("select * from authors where email = :email", compact('email'))->find();
+
+            if ($user == null) {
+                $errors['email'] = 'invalid email or password';
+            }
+
+            if (!password_verify($password, $user['password'])) {
+                $errors['email'] = 'invalid email or password';
+            }
+
+            if (empty($errors)) {
+                Session::set('user', [
+                    "email" => $user['email'],
+                    "profile_picture" => $user['profile_picture'],
+                    "name" => $user['name'],
+                    "username" => $user['username'],
+                    "id" => $user['id']
+                ]);
+
+                header("location: " . static::PROFILE_PAGE);
+                exit();
+            }
+        }
+        view("auth.login", compact('errors'));
     }
     public static function logout()
     {
