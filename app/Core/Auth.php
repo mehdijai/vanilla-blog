@@ -18,7 +18,7 @@ class Auth
 
         $validator = new Validator([
             'name' => ['string', 'max:100', 'min:3'],
-            'username' => ['string', 'max:100', 'min:3'],
+            'username' => ['string', 'max:100', 'min:3', 'unique:authors,username'],
             'email' => ['string', 'max:100', 'min:4', 'email', 'unique:authors,email'],
             'password' => ['string', 'min:8', 'upper', 'symbol', 'digit'],
         ]);
@@ -33,7 +33,7 @@ class Auth
             $data['id'] = $id;
             $data['profile_picture'] = App::resolve(Database::class)->query("select profile_picture from authors where id = :id", compact('id'))->find()['profile_picture'];
 
-            Session::set('user', array_diff_key($data, array_flip($user->casts)));
+            Session::set('user', array_diff_key($data, array_flip(User::$casts)));
             unset($_POST);
             header("Location: " . self::PROFILE_PAGE);
             exit();

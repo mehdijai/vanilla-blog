@@ -1,6 +1,7 @@
 # Change log
 
 ## 01/06/2023
+- Profile
 - Login
 - Guest vs Authenticated.
 - Default profile picture.

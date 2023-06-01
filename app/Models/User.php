@@ -19,7 +19,7 @@ class User
         ];
     }
 
-    public $casts = [
+    public static $casts = [
         'password'
     ];
 }

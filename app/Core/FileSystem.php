@@ -6,7 +6,7 @@ use Exception;
 
 class FileSystem
 {
-    private const TARGET_DIR = "uploads/";
+    private const TARGET_DIR = "/uploads\/";
     private const IMAGE_MAX_SIZE = 5000000;
     private const IMAGE_ALLOWED_TYPES = ['jpg', 'png', 'jpeg'];
 

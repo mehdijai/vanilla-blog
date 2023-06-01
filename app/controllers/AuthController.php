@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Core\App;
 use App\Core\Auth;
+use App\Core\Database;
 use App\Core\Session;
 use App\Models\User;
 
@@ -42,8 +44,19 @@ class AuthController extends Controller
     // Render Author Profile Page
     public function show()
     {
-        dd(Session::get('user'));
-        view("auth.profile");
+        $id = Session::get('user')['id'] ?? null;
+        if ($id == null) {
+            abort(404);
+        }
+
+        $db = App::resolve(Database::class);
+        $user = $db->query("select * from authors where id = :id", compact('id'))->find();
+
+        if ($user == null) {
+            abort(404);
+        }
+        $user = array_diff_key($user, array_flip(User::$casts));
+        view("auth.profile", compact('user'));
     }
 
     // Update Author Settings
