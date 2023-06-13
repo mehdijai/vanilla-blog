@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\Auth;
 use App\Core\Str;
 use App\Core\Validator;
 use App\Core\FileSystem;
@@ -30,6 +31,12 @@ class PostController extends Controller
     }
     public function store()
     {
+        $user = Auth::user();
+
+        if ($user == null) {
+            // TODO: UPDATE to 401
+            abort(404);
+        }
         extract($this->data);
         $data = $_POST;
 
@@ -61,7 +68,7 @@ class PostController extends Controller
             $data['description'] = trim(htmlspecialchars($data['description']));
             $data['body'] = trim(htmlspecialchars($data['body']));
             $data["slug"] = trim(Str::toKebabCase($data['title']));
-            $data["author_id"] = Session::get("user_id");
+            $data["author_id"] = $user['id'];
             $data["module_id"] = null;
 
             $thumbnail_file = null;
@@ -104,6 +111,13 @@ class PostController extends Controller
 
     public function edit()
     {
+        $user = Auth::user();
+
+        if ($user == null) {
+            // TODO: UPDATE to 401
+            abort(404);
+        }
+
         extract($this->data);
         $data = $_POST;
 
@@ -139,7 +153,7 @@ class PostController extends Controller
             $data['description'] = trim(htmlspecialchars($data['description']));
             $data['body'] = trim(htmlspecialchars($data['body']));
             $data["slug"] = trim(Str::toKebabCase($data['title']));
-            $data["author_id"] = Session::get("user_id");
+            $data["author_id"] = $user['id'];
             $data["module_id"] = null;
 
             if ($data['thumbnail'] != null) {
@@ -176,8 +190,16 @@ class PostController extends Controller
 
     public function destroy()
     {
+        $user = Auth::user();
+
+        if ($user == null) {
+            // TODO: UPDATE to 401
+            abort(404);
+        }
+
         try {
-            PostsRepository::delete(['id' => $_POST['id']]);
+
+            PostsRepository::delete(['id' => $_POST['id'], 'author_id' => $user['id']]);
             header("location: /posts");
             exit();
         } catch (Exception $ex) {
@@ -187,10 +209,18 @@ class PostController extends Controller
 
     public function updateDraftState()
     {
+        $user = Auth::user();
+
+        if ($user == null) {
+            // TODO: UPDATE to 401
+            abort(404);
+        }
+
         try {
             PostsRepository::updateDraftState([
                 'id' => $_POST['id'],
-                'draft' => !$_POST['draft']
+                'draft' => !$_POST['draft'], 
+                'author_id' => $user['id']
             ]);
             header("location: /posts");
             exit();

@@ -16,5 +16,3 @@ App::setContainer($container);
 App::bind(Database::class, function () {
     return new Database();
 });
-
-Session::set("user_id", 1);

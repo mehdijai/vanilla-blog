@@ -83,7 +83,7 @@ class Auth
     }
     public static function logout()
     {
-        return Session::unset("user");
+        Session::unset("user");
         header("location: " . LOGIN_PAGE);
     }
     public static function user()

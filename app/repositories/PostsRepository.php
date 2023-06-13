@@ -55,7 +55,7 @@ class PostsRepository extends Repository
 
     public static function delete(array $data)
     {
-        $query = 'delete from posts where id = :id';
+        $query = 'delete from posts where id = :id and author_id = :author_id';
 
         self::db()->query($query, $data)->close();
     }
@@ -64,7 +64,7 @@ class PostsRepository extends Repository
     {
         $data['draft'] = (int)$data['draft'];
 
-        $query = 'update posts set draft = :draft where id = :id';
+        $query = 'update posts set draft = :draft where id = :id and author_id = :author_id';
 
         self::db()->query($query, $data)->close();
     }
@@ -74,10 +74,13 @@ class PostsRepository extends Repository
         $data['draft'] = (int)$data['draft'];
 
         $id = $data['id'];
+        $author_id = $data['author_id'];
 
         
         unset($data['id']);
-        $post = self::db()->query('select * from posts where id = :id', compact('id'))->find();
+        unset($data['author_id']);
+        
+        $post = self::db()->query('select * from posts where id = :id and author_id = :author_id', compact('id', 'author_id'))->find();
         $inter = array_intersect_key($data, $post);
         
         $toUpdate = [];
