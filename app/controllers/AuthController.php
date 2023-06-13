@@ -64,4 +64,9 @@ class AuthController extends Controller
     {
         dd("Update");
     }
+
+    public function logout()
+    {
+        Auth::logout();
+    }
 }

@@ -13,7 +13,7 @@ $container = new Container();
 
 App::setContainer($container);
 
-App::bind("App\Core\Database", function () {
+App::bind(Database::class, function () {
     return new Database();
 });
 

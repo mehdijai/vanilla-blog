@@ -10,7 +10,7 @@ class GuestMiddleware implements Middleware
     public function handle()
     {
         if (Auth::user() != null) {
-            header("location: /");
+            header("location: " . HOMEPAGE);
             exit();
         }
     }

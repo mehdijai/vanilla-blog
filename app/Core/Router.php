@@ -2,43 +2,15 @@
 
 namespace App\Core;
 
+use App\Core\Contracts\Route;
+use App\Core\Contracts\RouteCollection;
+use App\Core\Middleware\Middleware;
+
 class Router
 {
-    private $method;
-    private $uri;
-
     private static $instance = null;
-
-    public function __construct()
-    {
-        $this->method = strtoupper($_POST['_method'] ?? $_SERVER["REQUEST_METHOD"]);
-        $this->uri = preg_replace("/(^\/)|(\/$)/", "", parse_url($_SERVER['REQUEST_URI'])['path']);
-    }
-
-    public function get($route, $controller, $function = "index")
-    {
-        $this->add('GET', $route, $controller, $function);
-    }
-
-    public function post($route, $controller, $function = "index")
-    {
-        $this->add('POST', $route, $controller, $function);
-    }
-
-    public function patch($route, $controller, $function = "index")
-    {
-        $this->add('PATCH', $route, $controller, $function);
-    }
-
-    public function put($route, $controller, $function = "index")
-    {
-        $this->add('PUT', $route, $controller, $function);
-    }
-
-    public function delete($route, $controller, $function = "index")
-    {
-        $this->add('DELETE', $route, $controller, $function);
-    }
+    private RouteCollection | null $routes = null;
+    private array $data = [];
 
     public static function getInstance()
     {
@@ -49,65 +21,119 @@ class Router
         return self::$instance;
     }
 
-    private function render($controller, $function, $data = [])
+    private function add(Route $route)
     {
-        $className = 'App\\Controllers\\' . $controller . "Controller";
-        $instance = new $className($data);
-        extract($data);
-        call_user_func(array($instance, $function));
+        if ($this->routes == null) {
+            $this->routes = new RouteCollection([]);
+        }
+
+        $this->routes->append($route);
+        return $this;
     }
 
-    public function simpleRoute($route, $controller, $function)
+    public function get($uri, $controller, $closure = 'index')
     {
+        return $this->add(new Route($uri, 'GET', $controller, $closure));
+    }
 
-        if (!empty($this->uri)) {
-            $route = preg_replace("/(^\/)|(\/$)/", "", $route);
-            $reqUri =  preg_replace("/(^\/)|(\/$)/", "", $this->uri);
+    public function post($uri, $controller, $closure = 'index')
+    {
+        return $this->add(new Route($uri, 'POST', $controller, $closure));
+    }
+
+    public function patch($uri, $controller, $closure = 'index')
+    {
+        return $this->add(new Route($uri, 'PATCH', $controller, $closure));
+    }
+
+    public function put($uri, $controller, $closure = 'index')
+    {
+        return $this->add(new Route($uri, 'PUT', $controller, $closure));
+    }
+
+    public function delete($uri, $controller, $closure = 'index')
+    {
+        return $this->add(new Route($uri, 'DELETE', $controller, $closure));
+    }
+
+    public function middleware(array $keys)
+    {
+        $this->routes->offsetGet($this->routes->count() - 1)->middleware = $keys;
+    }
+
+    private function render(string $controller, string $closure, array $data = [])
+    {
+        if (count($this->data) > 0) {
+            $data = $this->data;
+        }
+
+        $instance = new $controller($data);
+        call_user_func(array($instance, $closure));
+    }
+
+    public function route()
+    {
+        foreach ($this->routes as $route) {
+            if ($this->matchRoutes($route)) {
+                if ($route->middleware !=  null) {
+                    Middleware::resolveMultiple($route->middleware);
+                }
+                $this->render($route->controller, $route->closure);
+                exit();
+            }
+        }
+        abort(404);
+    }
+
+    private function matchSimpleRoute(Route $route, string $server_uri, string $server_method): bool
+    {
+        $routeUri = $route->uri;
+
+        if (!empty($server_uri)) {
+            $routeUri = preg_replace("/(^\/)|(\/$)/", "", $route->uri);
+            $reqUri =  preg_replace("/(^\/)|(\/$)/", "", $server_uri);
         } else {
             $reqUri = "/";
         }
 
+        return $reqUri == $routeUri && $route->method == $server_method;
+    }
+
+    private function matchRoutes(Route $route): bool
+    {
+        $server_method = strtoupper($_POST['_method'] ?? $_SERVER["REQUEST_METHOD"]);
+
+        if ($route->method != $server_method) {
+            return false;
+        }
+
+        $server_uri = preg_replace("/(^\/)|(\/$)/", "", parse_url($_SERVER['REQUEST_URI'])['path']);
         parse_str($_SERVER['QUERY_STRING'], $queries);
 
-        if ($reqUri == $route) {
-            $this->render($controller, $function, compact('queries'));
-            exit();
-        }
-    }
-    public function add($method, $route, $controller, $function)
-    {
-        if (!in_array($method, ['GET', 'POST', "PUT", "PATCH", "DELETE"])) {
-            throw new \InvalidArgumentException("method is not correct");
-        }
-
-        if ($this->method != $method) {
-            return;
-        }
 
         $params = [];
-        parse_str($_SERVER['QUERY_STRING'], $queries);
-
         $paramKey = [];
 
-        preg_match_all("/(?<={).+?(?=})/", $route, $paramMatches);
+        preg_match_all("/(?<={).+?(?=})/", $route->uri, $paramMatches);
+
 
         if (empty($paramMatches[0])) {
-            $this->simpleRoute($route, $controller, $function);
-            return;
+            $this->data = compact("queries");
+            return $this->matchSimpleRoute($route, $server_uri, $server_method);
         }
 
         foreach ($paramMatches[0] as $key) {
             $paramKey[] = $key;
         }
 
-        if (!empty($this->uri)) {
-            $route = preg_replace("/(^\/)|(\/$)/", "", $route);
-            $reqUri =  preg_replace("/(^\/)|(\/$)/", "", $this->uri);
+        if (!empty($server_uri)) {
+            $routeUri = preg_replace("/(^\/)|(\/$)/", "", $route->uri);
+            $reqUri =  preg_replace("/(^\/)|(\/$)/", "", $server_uri);
         } else {
             $reqUri = "/";
         }
 
-        $uri = explode("/", $route);
+        $uri = explode("/", $routeUri);
 
         $indexNum = [];
 
@@ -122,7 +148,7 @@ class Router
         foreach ($indexNum as $key => $index) {
 
             if (empty($reqUri[$index])) {
-                return;
+                return false;
             }
 
             $params[$paramKey[$key]] = $reqUri[$index];
@@ -134,15 +160,11 @@ class Router
 
         $reqUri = str_replace("/", '\\/', $reqUri);
 
-        if (preg_match("/$reqUri/", $route)) {
-            $this->render($controller, $function, compact('queries', 'params'));
-            exit();
+        if (preg_match("/$reqUri/", $routeUri)) {
+            $this->data = compact("queries", "params");
+            return true;
         }
-    }
 
-    function notFound()
-    {
-        abort(404);
-        exit();
+        return false;
     }
 }

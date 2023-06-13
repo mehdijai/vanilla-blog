@@ -1,5 +1,11 @@
 # Change log
 
+## 13/06/2023
+- Refactor Router
+- Validate Middlewares
+- Logout
+- Display Post Manager for post author
+
 ## 01/06/2023
 - Implement Middleware
 - Profile

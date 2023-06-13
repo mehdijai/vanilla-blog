@@ -7,10 +7,6 @@ use App\Repositories\AuthRepository;
 
 class Auth
 {
-    protected const LOGIN_PAGE = "/auth/login";
-    protected const REGISTER_PAGE = "/auth/register";
-    protected const PROFILE_PAGE = "/auth/profile";
-
     public static function register(User $user)
     {
         $errors = [];
@@ -35,7 +31,7 @@ class Auth
 
             Session::set('user', array_diff_key($data, array_flip(User::$casts)));
             unset($_POST);
-            header("Location: " . self::PROFILE_PAGE);
+            header("Location: " .PROFILE_PAGE);
             exit();
         }
 
@@ -79,7 +75,7 @@ class Auth
                     "id" => $user['id']
                 ]);
 
-                header("location: " . static::PROFILE_PAGE);
+                header("location: " . PROFILE_PAGE);
                 exit();
             }
         }
@@ -87,6 +83,8 @@ class Auth
     }
     public static function logout()
     {
+        return Session::unset("user");
+        header("location: " . LOGIN_PAGE);
     }
     public static function user()
     {

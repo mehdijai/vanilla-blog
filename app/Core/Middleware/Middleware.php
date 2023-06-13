@@ -27,4 +27,11 @@ class Middleware
 
         (new $middleware)->handle();
     }
+
+    public static function resolveMultiple(array $keys)
+    {
+        foreach ($keys as $key) {
+            static::resolve($key);
+        }
+    }
 }

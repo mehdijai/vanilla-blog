@@ -10,7 +10,7 @@ class AuthMiddleware implements Middleware
     public function handle()
     {
         if (Auth::user() == null) {
-            header("location: /");
+            header("location: " . LOGIN_PAGE);
             exit();
         }
     }
