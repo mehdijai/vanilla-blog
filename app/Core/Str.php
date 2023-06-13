@@ -32,10 +32,6 @@ class Str
     }
     public static function randomString(string $base = "", int $length = 10)
     {
-        if (strlen($base) != 0) {
-            $base = base64_encode($base);
-            $length = 3;
-        }
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $string = '';
         $charCount = strlen($characters);
@@ -44,6 +40,19 @@ class Str
             $string .= $characters[rand(0, $charCount - 1)];
         }
 
-        return $base . $string;
+        return base64_encode($base . $string);
+    }
+
+    public static function generateUUID() {
+        $data = random_bytes(16);
+    
+        // Set the version (4) and variant (2) bits
+        $data[6] = chr(ord($data[6]) & 0x0F | 0x40);
+        $data[8] = chr(ord($data[8]) & 0x3F | 0x80);
+    
+        // Format the UUID string
+        $uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    
+        return $uuid;
     }
 }

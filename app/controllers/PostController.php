@@ -74,7 +74,7 @@ class PostController extends Controller
             $thumbnail_file = null;
 
             try {
-                $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], Str::randomString($data['slug']));
+                $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail']);
                 $data['thumbnail'] = $thumbnail_file;
                 if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                     $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
@@ -160,7 +160,7 @@ class PostController extends Controller
                 $thumbnail_file = null;
 
                 try {
-                    $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail'], Str::randomString($data['slug']));
+                    $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail']);
                     $data['thumbnail'] = $thumbnail_file;
                     if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                         $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
@@ -219,7 +219,7 @@ class PostController extends Controller
         try {
             PostsRepository::updateDraftState([
                 'id' => $_POST['id'],
-                'draft' => !$_POST['draft'], 
+                'draft' => !$_POST['draft'],
                 'author_id' => $user['id']
             ]);
             header("location: /posts");

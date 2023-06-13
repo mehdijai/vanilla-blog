@@ -6,7 +6,7 @@ use Exception;
 
 class FileSystem
 {
-    private const TARGET_DIR = "/uploads\/";
+    private const TARGET_DIR = "uploads\/";
     private const IMAGE_MAX_SIZE = 5000000;
     private const IMAGE_ALLOWED_TYPES = ['jpg', 'png', 'jpeg'];
 
@@ -21,11 +21,13 @@ class FileSystem
         return self::TARGET_DIR;
     }
 
-    public static function uploadImage($image, string $fileName = null)
+    public static function uploadImage($image)
     {
 
         $imageFileType = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-        $target_file = self::getUploadDir() . ($fileName == null ? basename($image["name"]) : $fileName . "." . $imageFileType);
+        $target_file = self::getUploadDir() . Str::generateUUID() . "." . $imageFileType;
+        $target_file = str_replace("\\", "", $target_file);
+
 
         $valid = true;
         $check = getimagesize($image["tmp_name"]);

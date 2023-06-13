@@ -6,6 +6,7 @@
 - Logout
 - Display Post Manager for post author
 - Validate Author id before Post CRUD
+- Fix Upload Thumbnails errors
 
 ## 01/06/2023
 - Implement Middleware

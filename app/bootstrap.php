@@ -5,7 +5,6 @@ namespace App;
 use App\Core\App;
 use App\Core\Container;
 use App\Core\Database;
-use App\Core\Session;
 
 session_start();
 
