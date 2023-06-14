@@ -23,7 +23,7 @@ class PostsRepository extends Repository
         $query = "SELECT
                     posts.*,
                     authors.name AS author,
-                    authors.slug AS author_slug,
+                    authors.username AS author_username,
                     authors.profile_picture AS profile_picture,
                     IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
                 FROM
@@ -55,7 +55,7 @@ class PostsRepository extends Repository
 
     public static function delete(array $data)
     {
-        $query = 'delete from posts where id = :id';
+        $query = 'delete from posts where id = :id and author_id = :author_id';
 
         self::db()->query($query, $data)->close();
     }
@@ -64,7 +64,7 @@ class PostsRepository extends Repository
     {
         $data['draft'] = (int)$data['draft'];
 
-        $query = 'update posts set draft = :draft where id = :id';
+        $query = 'update posts set draft = :draft where id = :id and author_id = :author_id';
 
         self::db()->query($query, $data)->close();
     }
@@ -74,14 +74,17 @@ class PostsRepository extends Repository
         $data['draft'] = (int)$data['draft'];
 
         $id = $data['id'];
+        $author_id = $data['author_id'];
 
-        
+
         unset($data['id']);
-        $post = self::db()->query('select * from posts where id = :id', compact('id'))->find();
+        unset($data['author_id']);
+
+        $post = self::db()->query('select * from posts where id = :id and author_id = :author_id', compact('id', 'author_id'))->find();
         $inter = array_intersect_key($data, $post);
-        
+
         $toUpdate = [];
-        
+
         foreach ($inter as $key => $value) {
             if ($value != $post[$key]) {
                 if ($key === 'thumbnail') {
@@ -93,14 +96,68 @@ class PostsRepository extends Repository
                 }
             }
         }
-        
+
         $keys = array_map(fn ($key) => "{$key} = :{$key}", array_keys($toUpdate));
 
-        
+
         $query = "update posts set " . join(", ", $keys) . " where id = :id;";
-        
+
         $toUpdate = [...$toUpdate, ...compact("id")];
 
         self::db()->query($query, $toUpdate)->close();
+    }
+    public static function allByAuthors(string $username)
+    {
+        $query = "SELECT
+                        posts.*,
+                        authors.name AS author,
+                        authors.profile_picture AS profile_picture,
+                        authors.username AS author_username,
+                        IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
+                    FROM
+                        posts
+                        INNER JOIN authors ON posts.author_id = authors.id
+                        LEFT JOIN category_post ON posts.id = category_post.post_id
+                        LEFT JOIN categories ON category_post.category_id = categories.id
+                    WHERE
+                        authors.username = :username
+                    GROUP BY
+                        posts.id
+                    ORDER BY
+                        posts.created_at
+                    DESC;";
+
+        $posts = self::db()->query($query, compact('username'))->all();
+
+        $posts = array_map(function ($post) {
+            $post['post_categories'] = json_decode($post['post_categories'], true);
+            return $post;
+        }, $posts);
+
+        return $posts;
+    }
+
+    public static function getByAuthor(string $slug, int $id)
+    {
+        $query = "SELECT
+                    posts.*,
+                    authors.name AS author,
+                    authors.username AS author_username,
+                    authors.profile_picture AS profile_picture,
+                    IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
+                FROM
+                    posts
+                    INNER JOIN authors ON posts.author_id = authors.id
+                    LEFT JOIN category_post ON posts.id = category_post.post_id
+                    LEFT JOIN categories ON category_post.category_id = categories.id
+                WHERE
+                    authors.id = :id AND
+                    posts.slug = :slug;";
+
+        $post = self::db()->query($query, compact('slug', 'id'))->findOrFail();
+
+        $post['post_categories'] = json_decode($post['post_categories'], true);
+
+        return $post;
     }
 }

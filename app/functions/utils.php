@@ -1,6 +1,6 @@
 <?php
 
-function dd($value)
+function dd($value, $json = true)
 {
 ?>
     <html>
@@ -8,12 +8,21 @@ function dd($value)
     <head>
         <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/monokai-sublime.min.css">
         <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
-        <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/json.min.js"></script>
+        <style>
+            * {
+                color: white;
+            }
+        </style>
+        <?php if ($json) : ?>
+            <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/json.min.js"></script>
+        <?php else : ?>
+            <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/languages/php.min.js"></script>
+        <?php endif ?>
         <title>Dump & Die</title>
     </head>
 
     <body style="background-color: #23241F;">
-        <pre><code class="language-json"><?= json_encode($value, JSON_PRETTY_PRINT); ?></code></pre>
+        <pre><code class="language-json"><?= $json ? json_encode($value, JSON_PRETTY_PRINT) : var_dump($value) ?></code></pre>
         <script>
             hljs.highlightAll();
         </script>

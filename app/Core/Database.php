@@ -58,6 +58,13 @@ class Database
         $this->close();
         return $data;
     }
+    public function lastInsertId()
+    {
+        $data = $this->pdo->lastInsertId();
+        $this->close();
+        return $data;
+    }
+    
     public function close()
     {
         if ($this->pdo != null) {

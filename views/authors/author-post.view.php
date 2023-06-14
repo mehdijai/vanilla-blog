@@ -2,7 +2,7 @@
 
 use App\Core\Auth;
 
-component("head")
+component("head");
 
 ?>
 

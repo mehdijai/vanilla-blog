@@ -4,11 +4,14 @@ use vanilla_blog;
 CREATE TABLE `authors`(
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` VARCHAR(255) NOT NULL,
-	`slug` VARCHAR(255) NOT NULL,
+	`username` VARCHAR(255) NOT NULL UNIQUE,
 	`email` VARCHAR(255) NOT NULL UNIQUE,
 	`password` VARCHAR(255) NOT NULL,
 	`email_verified` BOOL DEFAULT 0,
-	`profile_picture` VARCHAR(255),
+	`profile_picture` varchar(255) NOT NULL DEFAULT '/static/default_profile_picture.jpg',
+	`cover` VARCHAR(255),
+	`social_media` JSON,
+	`about` TEXT(255),
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
@@ -42,7 +45,7 @@ CREATE TABLE `posts`(
 	`title` VARCHAR(255) NOT NULL,
     `body` TEXT(1000) NOT NULL,
     `description` TEXT(500) NOT NULL,
-	`thumbnail` VARCHAR(255) NOT NULL,
+	`thumbnail` VARCHAR(255) NOT NULL DEFAULT '/static/default_image.png',
 	`slug` VARCHAR(255) NOT NULL UNIQUE,
 	`draft` tinyint(1) NOT NULL DEFAULT '1',
 	`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,7 +72,7 @@ SELECT
     posts.*,
     authors.name AS author,
     authors.profile_picture AS profile_picture,
-	authors.slug AS author_slug,
+	authors.username AS author_username,
     IF(COUNT(categories.title) = 0, '[]', JSON_ARRAYAGG(JSON_OBJECT('title', categories.title, 'slug', categories.slug))) AS post_categories
 FROM
     posts

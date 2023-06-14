@@ -44,9 +44,37 @@ trait ValidationTrait
     }
     public function file($value)
     {
-        if($value == null) return false;
+        if ($value == null) return false;
         return isset($value) && isset($value["tmp_name"]) && $value["tmp_name"] != null && getimagesize($value["tmp_name"]);
     }
+    public function email(string $value)
+    {
+        return filter_var($value, FILTER_VALIDATE_EMAIL);
+    }
+    public function digit(string $value)
+    {
+        return preg_match('/\d/', $value);
+    }
+    public function upper(string $value)
+    {
+
+        return preg_match('/[A-Z]/', $value);
+    }
+    public function symbol(string $value)
+    {
+
+        return preg_match('/[!@#$%^&*()\-_=+{};:,<.>]/', $value);
+    }
+    public function unique(string $value, string $table, string $column)
+    {
+        $db = App::resolve(Database::class);
+        $binding = [];
+        $binding[$column] = $value;
+        $record = $db->query("select {$column} from {$table} where {$column} = :{$column}", $binding)->find();
+
+        return $record == false;
+    }
+
 
     private $rules = [
         'string' => ':attribute must be a string',
@@ -58,6 +86,11 @@ trait ValidationTrait
         'bool' => ':attribute must be a boolean',
         'required' => ':attribute is required',
         'nullable' => ':attribute is nullable',
+        'email' => ':attribute must be a valid email',
+        'digit' => ':attribute must have at least 1 digit',
+        'symbol' => ':attribute must have at least 1 symbol',
+        'upper' => ':attribute must have at least 1 uppercase',
+        'unique' => 'This :attribute already exists. Try to login',
     ];
 
 
