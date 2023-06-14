@@ -6,7 +6,6 @@ use App\Core\Auth;
 use App\Core\Str;
 use App\Core\Validator;
 use App\Core\FileSystem;
-use App\Core\Session;
 use App\Repositories\PostsRepository;
 use Exception;
 
@@ -75,7 +74,7 @@ class PostController extends Controller
 
             try {
                 $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail']);
-                $data['thumbnail'] = $thumbnail_file;
+                $data['thumbnail'] = '/' . $thumbnail_file;
                 if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                     $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
                 }
@@ -88,10 +87,11 @@ class PostController extends Controller
         if (empty($errors)) {
 
             PostsRepository::store($data);
+            $slug = $data["slug"];
             $data = [];
             $errors = [];
             unset($_POST);
-            header("Location: /posts");
+            header("Location: /authors/posts/" . $slug);
             exit();
         }
 
@@ -161,7 +161,7 @@ class PostController extends Controller
 
                 try {
                     $thumbnail_file = FileSystem::uploadImage($_FILES['thumbnail']);
-                    $data['thumbnail'] = $thumbnail_file;
+                    $data['thumbnail'] = '/' . $thumbnail_file;
                     if (!$validator->file_path($thumbnail_file) || $thumbnail_file == null) {
                         $errors['thumbnail'] = "Thumbnail was not uploaded successfully!";
                     }
@@ -174,10 +174,11 @@ class PostController extends Controller
 
         if (empty($errors)) {
             PostsRepository::update($data);
+            $slug = $data["slug"];
             $data = [];
             $errors = [];
             unset($_POST);
-            header("Location: /posts");
+            header("Location: /authors/posts/" . $slug);
             exit();
         }
 
@@ -200,7 +201,9 @@ class PostController extends Controller
         try {
 
             PostsRepository::delete(['id' => $_POST['id'], 'author_id' => $user['id']]);
-            header("location: /posts");
+            $routeBase = explode('/', $_SERVER['HTTP_REFERER'])[3];
+            $redirect = $routeBase === 'authors' ? 'location: /authors/posts' : 'location: /posts';
+            header($redirect);
             exit();
         } catch (Exception $ex) {
             dd($ex->getMessage());
@@ -222,7 +225,9 @@ class PostController extends Controller
                 'draft' => !$_POST['draft'],
                 'author_id' => $user['id']
             ]);
-            header("location: /posts");
+            $routeBase = explode('/', $_SERVER['HTTP_REFERER'])[3];
+            $redirect = $routeBase === 'authors' ? 'location: /authors/posts' : 'location: /posts';
+            header($redirect);
             exit();
         } catch (Exception $ex) {
             dd($ex->getMessage());

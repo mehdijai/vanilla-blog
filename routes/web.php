@@ -2,12 +2,13 @@
 
 namespace Routes;
 
-use App\Controllers\AboutController;
+use App\Core\Router;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
-use App\Controllers\ContactController;
 use App\Controllers\PostController;
-use App\Core\Router;
+use App\Controllers\AboutController;
+use App\Controllers\AuthorController;
+use App\Controllers\ContactController;
 
 $router = Router::getInstance();
 
@@ -25,6 +26,12 @@ $router->post("/posts/create", PostController::class, "store")->middleware(['aut
 $router->patch("/posts/update", PostController::class, "edit")->middleware(['auth']);
 $router->get("/posts/update/{slug}", PostController::class, "update")->middleware(['auth']);
 $router->get("/posts/{slug}", PostController::class, "view");
+
+// Author
+$router->get("/authors", AuthorController::class);
+$router->get("/authors/posts", AuthorController::class, "list_posts")->middleware(['auth']);
+$router->get("/authors/posts/{slug}", AuthorController::class, "view_post")->middleware(['auth']);
+$router->get("/authors/{username}", AuthorController::class, "view");
 
 // Auth
 $router->get("/auth/login", AuthController::class, "login")->middleware(['guest']);

@@ -1,5 +1,11 @@
 # Change log
 
+## 14/06/2023
+- Authors Page
+- Author Page
+- Authors Posts page
+- Authors Post page -- Can view draft posts also
+
 ## 13/06/2023
 - Refactor Router
 - Validate Middlewares
